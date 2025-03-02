@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://picsum.photos/2000/1000');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+  
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.411); 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+           
+        }
+        #score {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            
+            border: none;
+            border-radius: 5px;
+            background-color: #8afa8e;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            
+            background-color: #3a813e;
+        }
+        button:active{
+            background-color: rgb(21, 68, 37);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Application</h1>
+        <button id="play-button">Play Quiz</button>
+        <button id="play-again-button" style="display: none;">Play Again</button>
+        <p id="score">Score: 0</p>
+    </div>
+    
+    <script>
+        let score = 0;
+        let currentQuestionIndex = 0;
+        let questions = [
+            { question: "What is the capital city of Pakistan?", answer: "Karachi" },
+            { question: "Who is the founder of Pakistan?", answer: "Quaid-e-Azam" },
+            { question: "Which tag is used to define an unordered list in HTML?", answer: "<ul>" },
+            { question: "Which of the following is the correct HTML element for inserting a line break?", answer: "<br>" },
+            { question: "What does the <a> tag define in HTML?", answer: "Anchor" },
+            { question: "Which attribute is used to specify the URL of an external script file in HTML?", answer: "src" },
+            { question: "Which HTML element is used to define the largest heading?", answer: "<h1>" },
+            { question: "What does the CSS property color define?", answer: "Text color" },
+            { question: "Which of the following CSS properties is used to change the background color of an element?", answer: "background-color" },
+            { question: "What does the CSS property margin do?", answer: "Defines the space outside an element" },
+            { question: "Which of the following is a correct way to define a JavaScript function?", answer: "function myFunction() {}" },
+            { question: "What is the correct syntax to create a JavaScript variable?", answer: "var x = 10;" },
+            { question: "What is the largest city in the world?", answer: "Tokyo" },
+            { question: "Who was the first man to walk on the moon?", answer: "Neil Armstrong" },
+            { question: "Which JavaScript event is triggered when the user clicks on an HTML element?", answer: "onclick" }
+        ];
+
+        document.getElementById("play-button").addEventListener("click", startQuiz);
+        document.getElementById("play-again-button").addEventListener("click", startQuiz);
+
+        function askQuestion(questionObj) {
+            let answer = prompt(questionObj.question);
+            if (answer === null) { // User clicked Cancel
+                alert("Quiz canceled. You can start again!");
+                resetQuiz(); // Reset quiz if canceled
+                return false; // Stop the quiz if canceled
+            }
+            if (answer.trim().toLowerCase() === questionObj.answer.toLowerCase()) {
+                score++;
+                alert("Correct!");
+            } else {
+                alert(`Incorrect. The correct answer is ${questionObj.answer}.`);
+            }
+            return true; // Proceed to the next question
+        }
+
+        function startQuiz() {
+            score = 0;
+            currentQuestionIndex = 0;
+            document.getElementById("score").textContent = `Score: 0`;
+
+            // Hide play button, show play again button
+            document.getElementById("play-button").style.display = "none";
+            document.getElementById("play-again-button").style.display = "inline-block";
+
+            // Loop through questions and ask each
+            for (let i = currentQuestionIndex; i < questions.length; i++) {
+                if (!askQuestion(questions[i])) {
+                    break; // Exit the loop if the quiz is canceled
+                }
+                currentQuestionIndex++; // Increment the index after each question
+            }
+
+            document.getElementById("score").textContent = `Score: ${score} out of ${questions.length}`;
+        }
+
+        function resetQuiz() {
+            // Reset quiz interface and go back to initial state
+            document.getElementById("score").textContent = `Score: 0`;
+            document.getElementById("play-button").style.display = "inline-block";
+            document.getElementById("play-again-button").style.display = "none";
+            currentQuestionIndex = 0; // Reset question index so quiz starts from the beginning
+        }
+    </script>
+</body>
+</html>
